@@ -28,10 +28,12 @@ async function initMap() {
   // Listen for click and look up country
   map.addListener("click", (e) => {
 
-    // Use geocoder to get country name from coordinates
+    // Use geocoder to get location name from coordinates
     geocoder
     .geocode({ location: e.latLng })
     .then((response) => {
+
+      // Get country name from location
       let country = response.results[response.results.length-1].formatted_address;
       console.log('Country: ' + country);
       
