@@ -62,7 +62,6 @@ initMap();
 // Set current country/region
 const divs = document.querySelectorAll('.choice');
 divs.forEach(el => el.addEventListener('click', event => {
-  console.log(event.target.innerHTML);
   CurrentChoice = event.target.innerHTML;
 }));
 
