@@ -8,6 +8,9 @@
 let map;
 let CurrentChoice = '';
 
+// Other variables
+var buttonGroup = document.getElementById("btn-group");
+
 async function initMap() {
   
   // Request needed libraries.
@@ -35,7 +38,6 @@ async function initMap() {
 
       // Get country name from location
       let country = response.results[response.results.length-1].formatted_address;
-      console.log('Country: ' + country);
       
       // Check if current choice is correct
       if(country == CurrentChoice) {
@@ -60,9 +62,8 @@ async function initMap() {
 initMap();
 
 // Set current country/region
-const divs = document.querySelectorAll('.choice');
-divs.forEach(el => el.addEventListener('click', event => {
-  CurrentChoice = event.target.innerHTML;
-}));
-
-
+buttonGroup.addEventListener("click", function(event) {
+  if (event.target.matches(".choice")) { 
+    CurrentChoice = event.target.innerHTML;
+  }
+});

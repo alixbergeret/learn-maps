@@ -5,9 +5,7 @@ import { Firestore,
         onSnapshot, 
         query, 
         collection, 
-        orderBy,
-        addDoc,
-        doc,getDocs } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js'
+        orderBy } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,24 +23,47 @@ const db = getFirestore(app);
 
 // Other variables
 var dropDown = document.getElementById("MapList");
+var buttonGroup = document.getElementById("btn-group");
 
-// Listen for dropdown change
+//-----------------------------------------------------------------------------------------------------------------------------
+// When user selects a map from the dropdown
+//-----------------------------------------------------------------------------------------------------------------------------
 dropDown.addEventListener("click", function(event) {
     if (event.target.matches(".dropdown-item")) {  
-        console.log("Child clicked:", event.target.dataset.docid);
 
+        // First, clear list
+        buttonGroup.innerHTML = '';
+
+        // Get map doc ID, then loads all countries/regions for it
         const querySnapshot = query(collection(db, "Maps", event.target.dataset.docid, "map_items"), orderBy("item_name"));
         const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
             snapshot.forEach((doc) => {
-                console.log(doc.id, " => ", doc.data());
+
+                // Create input element
+                let inputElement = document.createElement("input");
+                inputElement.type = "radio";
+                inputElement.classList.add("btn-check");
+                inputElement.name = "itemList";
+                inputElement.id = doc.id;
+                buttonGroup.appendChild(inputElement);
+
+                // Create label element
+                let labelElement = document.createElement("label");
+                labelElement.classList.add("btn", "btn-outline-primary", "choice");
+                labelElement.htmlFor = doc.id;
+                labelElement.innerHTML = doc.data().item_name.trim();
+                buttonGroup.appendChild(labelElement);
+
+
             });
         });
 
     }
 });
 
-
-// Get a live data snapshot (i.e. auto-refresh) of our collection
+//-----------------------------------------------------------------------------------------------------------------------------
+// Populate Maps dropdown from Firestore
+//-----------------------------------------------------------------------------------------------------------------------------
 const q = query(collection(db, "Maps"), orderBy("map_type"), orderBy("map_name"));
 const unsubscribe = onSnapshot(q, (snapshot) => {
     
@@ -59,7 +80,7 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
             }
 
             // Add Header
-            addToList('dropdown-header', doc.data().map_type, doc.id);
+            addToList('dropdown-header', doc.data().map_type);
         }
 
         // Create a new list item and add it to the dropdown
@@ -71,6 +92,7 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
     });
 });
 
+// This function add one item to the dropdown
 function addToList(css_class, textContent = '', doc_id = 0) {
     
     // Create list item and add to list
@@ -89,7 +111,8 @@ function addToList(css_class, textContent = '', doc_id = 0) {
     }
     link.textContent = textContent;
     link.classList.add(css_class);
-    link.dataset.docid = doc_id;
+    if(doc_id != 0)
+        link.dataset.docid = doc_id;
 
     listItem.appendChild(link);
     
