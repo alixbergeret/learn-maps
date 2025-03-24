@@ -1,4 +1,6 @@
-// Import the functions you need from the SDKs you need
+//-----------------------------------------------------------------------------------------------------------------------------
+// Initialize Firestore
+//-----------------------------------------------------------------------------------------------------------------------------
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
 import { Firestore, 
         getFirestore, 
@@ -26,12 +28,12 @@ var dropDown = document.getElementById("MapList");
 var buttonGroup = document.getElementById("btn-group");
 
 //-----------------------------------------------------------------------------------------------------------------------------
-// When user selects a map from the dropdown
+// When user selects a map from the dropdown, loads all countries/regions
 //-----------------------------------------------------------------------------------------------------------------------------
 dropDown.addEventListener("click", function(event) {
     if (event.target.matches(".dropdown-item")) {  
 
-        // First, clear list
+        // First, clear list of countries/regions
         buttonGroup.innerHTML = '';
 
         // Get map doc ID, then loads all countries/regions for it
@@ -54,10 +56,8 @@ dropDown.addEventListener("click", function(event) {
                 labelElement.innerHTML = doc.data().item_name.trim();
                 buttonGroup.appendChild(labelElement);
 
-
             });
         });
-
     }
 });
 
