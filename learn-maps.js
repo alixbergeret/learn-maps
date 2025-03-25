@@ -8,6 +8,7 @@ let CurrentChoice = '';
 
 // Other variables
 var buttonGroup = document.getElementById("btn-group");
+var dropDown = document.getElementById("MapList");
 
 async function initMap() {
   
@@ -28,6 +29,9 @@ async function initMap() {
 
   // Listen for click and look up country
   map.addListener("click", (e) => {
+    
+    // DEBUG - print coordinates of click
+    console.log(e.latLng.toJSON());
 
     // Use geocoder to get location name from coordinates
     geocoder
@@ -60,4 +64,8 @@ buttonGroup.addEventListener("click", function(event) {
   if (event.target.matches(".choice")) { 
     CurrentChoice = event.target.innerHTML;
   }
+});
+
+dropDown.addEventListener("click", function(event) {
+  map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
 });

@@ -84,7 +84,7 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
         }
 
         // Create a new list item and add it to the dropdown
-        addToList('dropdown-item', doc.data().map_name, doc.id);
+        addToList('dropdown-item', doc.data().map_name, doc.id, doc.data().map_lat, doc.data().map_lng);
 
         // Save previous value
         prevType = doc.data().map_type;
@@ -93,7 +93,7 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
 });
 
 // This function add one item to the dropdown
-function addToList(css_class, textContent = '', doc_id = 0) {
+function addToList(css_class, textContent = '', doc_id = 0, map_lat = '', map_lng = '') {
     
     // Create list item and add to list
     let listItem = document.createElement("li");
@@ -108,6 +108,8 @@ function addToList(css_class, textContent = '', doc_id = 0) {
     } else {
         link = document.createElement("a");
         link.href = '#';
+        link.dataset.lat = map_lat;
+        link.dataset.lng = map_lng;
     }
     link.textContent = textContent;
     link.classList.add(css_class);
