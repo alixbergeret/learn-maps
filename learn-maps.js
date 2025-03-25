@@ -10,6 +10,9 @@ let CurrentChoice = '';
 var buttonGroup = document.getElementById("btn-group");
 var dropDown = document.getElementById("MapList");
 
+//-----------------------------------------------------------------------------------------------------------------------------
+// Set map up
+//-----------------------------------------------------------------------------------------------------------------------------
 async function initMap() {
   
   // Request needed libraries.
@@ -56,8 +59,8 @@ async function initMap() {
     .catch((e) => window.alert("Geocoder failed due to: " + e));
   });
 }
-
 initMap();
+//-----------------------------------------------------------------------------------------------------------------------------
 
 // Set current country/region
 buttonGroup.addEventListener("click", function(event) {
@@ -66,6 +69,7 @@ buttonGroup.addEventListener("click", function(event) {
   }
 });
 
+// Centers maps depending on map choice
 dropDown.addEventListener("click", function(event) {
   map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
 });
