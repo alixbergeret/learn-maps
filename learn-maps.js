@@ -5,6 +5,7 @@
  */
 let map;
 let CurrentChoice = '';
+let CurrentID = '';
 
 // Other variables
 var buttonGroup = document.getElementById("btn-group");
@@ -53,6 +54,9 @@ async function initMap() {
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
         toastBootstrap.show();
 
+        // Disable current selection
+        document.getElementById(CurrentID).disabled = true;
+
       } else {
         console.log("NOPE");
       }
@@ -67,6 +71,7 @@ initMap();
 buttonGroup.addEventListener("click", function(event) {
   if (event.target.matches(".choice")) { 
     CurrentChoice = event.target.innerHTML;
+    CurrentID = event.target.getAttribute('for');
   }
 });
 
