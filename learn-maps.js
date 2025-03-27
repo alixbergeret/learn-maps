@@ -43,7 +43,8 @@ async function initMap() {
 
       // Get country name from location
       let country = response.results[response.results.length-1].formatted_address;
-      
+      console.log(country);
+
       // Check if current choice is correct
       if(country == CurrentChoice) {
 
@@ -71,5 +72,6 @@ buttonGroup.addEventListener("click", function(event) {
 
 // Centers maps depending on map choice
 dropDown.addEventListener("click", function(event) {
+  map.setZoom(Number(event.target.dataset.zoom));
   map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
 });

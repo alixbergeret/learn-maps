@@ -88,7 +88,8 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
                    doc.data().map_name, 
                    doc.id, 
                    doc.data().map_lat, 
-                   doc.data().map_lng);
+                   doc.data().map_lng,
+                   doc.data().map_zoom);
 
         // Save previous value
         prevType = doc.data().map_type;
@@ -101,7 +102,8 @@ function addToList(css_class,
                    textContent = '', 
                    doc_id = 0, 
                    map_lat = '', 
-                   map_lng = '') {
+                   map_lng = '',
+                   map_zoom = 0) {
     
     // Create list item and add to list
     let listItem = document.createElement("li");
@@ -118,6 +120,7 @@ function addToList(css_class,
         link.href = '#';
         link.dataset.lat = map_lat;
         link.dataset.lng = map_lng;
+        link.dataset.zoom = map_zoom;
     }
     link.textContent = textContent;
     link.classList.add(css_class);
