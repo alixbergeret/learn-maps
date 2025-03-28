@@ -6,6 +6,7 @@
 let map;
 let CurrentChoice = '';
 let CurrentID = '';
+let CurrentScore = 0;
 
 // Other variables
 var buttonGroup = document.getElementById("btn-group");
@@ -56,6 +57,11 @@ async function initMap() {
 
         // Disable current selection
         document.getElementById(CurrentID).disabled = true;
+
+        // Increase and display score
+        CurrentScore++;
+        let ProgressBar = document.getElementById("ScoreProgress");
+        ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
 
       } else {
         console.log("NOPE");

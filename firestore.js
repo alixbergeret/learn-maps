@@ -39,6 +39,13 @@ dropDown.addEventListener("click", function(event) {
         // Get map doc ID, then loads all countries/regions for it
         const querySnapshot = query(collection(db, "Maps", event.target.dataset.docid, "map_items"), orderBy("item_name"));
         const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
+
+            // Display total in progress bar
+            let ProgressBar = document.getElementById("ScoreProgress");
+            ProgressBar.innerHTML = '0/' + snapshot.size;
+            ProgressBar.dataset.max = snapshot.size;
+
+            // Loop through records
             snapshot.forEach((doc) => {
 
                 // Create input element
