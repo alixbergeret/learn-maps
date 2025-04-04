@@ -7,6 +7,7 @@ let map;
 let CurrentChoice = '';
 let CurrentID = '';
 let CurrentScore = 0;
+let incorrectGuesses = 0;
 
 // Other variables
 var buttonGroup = document.getElementById("btn-group");
@@ -42,58 +43,66 @@ async function initMap() {
     // DEBUG - print coordinates of click
     console.log(e.latLng.toJSON());
 
-    // Use geocoder to get location name from coordinates
-    geocoder
-    .geocode({ location: e.latLng })
-    .then((response) => {
+    // Check if user has selected a choice
+    if(CurrentChoice != '') {
 
-      // Get country name and place ID from location
-      let country = response.results[response.results.length-1].formatted_address;
-      let place_id = response.results[response.results.length-1].place_id;
+      // Use geocoder to get location name from coordinates
+      geocoder
+      .geocode({ location: e.latLng })
+      .then((response) => {
 
-      // Check if current choice is correct
-      if(country == CurrentChoice) {
+        // Get country name and place ID from location
+        let country = response.results[response.results.length-1].formatted_address;
+        let place_id = response.results[response.results.length-1].place_id;
 
-        // If correct, show toast message
-        const toastLiveExample = document.getElementById('liveToast');
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-        toastBootstrap.show();
+        // Check if current choice is correct
+        if(country == CurrentChoice) {
 
-        // Disable current selection in list
-        document.getElementById(CurrentID).disabled = true;
+          // If correct, show toast message
+          const toastLiveExample = document.getElementById('liveToast');
+          const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+          toastBootstrap.show();
 
-        // Increase and display score
-        CurrentScore++;
-        ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
+          // Disable current selection in list
+          document.getElementById(CurrentID).disabled = true;
 
-        // Increase progress bar
-        let percentage = CurrentScore / ProgressBar.dataset.max * 100;
-        ProgressBar.style.width = percentage + '%';
+          // Increase and display score
+          CurrentScore++;
+          ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
 
-        // Get coordinates of country from Google Places, then create marker
-        let apiKey = 'AIzaSyC572-BukrE9PySgtA3ykrO7iydTb4S4Ko';
-        fetch('https://places.googleapis.com/v1/places/' + place_id + '?fields=location&key=' + apiKey)
-          .then(response => response.json())
-          .then(response => {
+          // Increase progress bar
+          let percentage = CurrentScore / ProgressBar.dataset.max * 100;
+          ProgressBar.style.width = percentage + '%';
 
-            // Create marker
-            const countryTag = document.createElement("div");
-            countryTag.className = "country-tag";
-            countryTag.textContent = country;            
-            marker = new AdvancedMarkerElement({
-              map: map,
-              position: { lat: response.location.latitude, lng: response.location.longitude },
-              title: country,
-              content: countryTag,
-            });
-        });
+          // Get coordinates of country from Google Places, then create marker
+          let apiKey = 'AIzaSyC572-BukrE9PySgtA3ykrO7iydTb4S4Ko';
+          fetch('https://places.googleapis.com/v1/places/' + place_id + '?fields=location&key=' + apiKey)
+            .then(response => response.json())
+            .then(response => {
+
+              // Create marker
+              const countryTag = document.createElement("div");
+              countryTag.className = "country-tag";
+              countryTag.textContent = country;            
+              marker = new AdvancedMarkerElement({
+                map: map,
+                position: { lat: response.location.latitude, lng: response.location.longitude },
+                title: country,
+                content: countryTag,
+              });
+          });
+            
+        // Wrong guess
+        } else {
           
-      // Wrong guess
-      } else {
-        console.log("NOPE");
-      }
-    })
-    .catch((e) => window.alert("Geocoder failed due to: " + e));
+          // Increase incorrect guesses and display on screen
+          incorrectGuesses++;
+          document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
+
+        }
+      })
+      .catch((e) => console.log("Geocoder failed due to: " + e));
+    }
   });
 }
 initMap();
@@ -119,4 +128,7 @@ btnReset.addEventListener("click", function(event) {
   CurrentScore = 0;
   ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;  
   marker.map = null;
+  incorrectGuesses = 0;
+  document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
+
 });
