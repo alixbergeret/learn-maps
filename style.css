@@ -1,0 +1,7 @@
+.progress {
+    height: 25px
+}
+
+#ScoreProgress {
+    width: 0%
+}
