@@ -46,7 +46,7 @@ async function initMap() {
     // Check if user has selected a choice
     if(CurrentChoice != '') {
 
-      // Use geocoder to get location name from coordinates
+      // Use geocoder to get location name from coordinates of map click
       geocoder
       .geocode({ location: e.latLng })
       .then((response) => {
