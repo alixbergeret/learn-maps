@@ -75,10 +75,14 @@ async function initMap() {
           .then(response => {
 
             // Create marker
+            const countryTag = document.createElement("div");
+            countryTag.className = "country-tag";
+            countryTag.textContent = country;            
             const marker = new AdvancedMarkerElement({
               map: map,
               position: { lat: response.location.latitude, lng: response.location.longitude },
               title: country,
+              content: countryTag,
             });
         });
           
