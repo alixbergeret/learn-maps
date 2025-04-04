@@ -63,6 +63,10 @@ async function initMap() {
         let ProgressBar = document.getElementById("ScoreProgress");
         ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
 
+        // Increase progress bar
+        let percentage = CurrentScore / ProgressBar.dataset.max * 100;
+        ProgressBar.style.width = percentage + '%';
+
       } else {
         console.log("NOPE");
       }

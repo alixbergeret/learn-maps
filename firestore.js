@@ -44,6 +44,7 @@ dropDown.addEventListener("click", function(event) {
             let ProgressBar = document.getElementById("ScoreProgress");
             ProgressBar.innerHTML = '0/' + snapshot.size;
             ProgressBar.dataset.max = snapshot.size;
+            ProgressBar.style.width = '0%';
 
             // Loop through records
             snapshot.forEach((doc) => {
