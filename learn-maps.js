@@ -32,6 +32,7 @@ async function initMap() {
     disableDefaultUI: true
   });
 
+  //---------------------------------------------------------------------------------------------------------------------------
   // Listen for click and look up country
   map.addListener("click", (e) => {
     
@@ -43,9 +44,9 @@ async function initMap() {
     .geocode({ location: e.latLng })
     .then((response) => {
 
-      // Get country name from location
+      // Get country name and place ID from location
       let country = response.results[response.results.length-1].formatted_address;
-      console.log(country);
+      let place_id = response.results[response.results.length-1].place_id;
 
       // Check if current choice is correct
       if(country == CurrentChoice) {
@@ -55,7 +56,7 @@ async function initMap() {
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
         toastBootstrap.show();
 
-        // Disable current selection
+        // Disable current selection in list
         document.getElementById(CurrentID).disabled = true;
 
         // Increase and display score
@@ -67,6 +68,21 @@ async function initMap() {
         let percentage = CurrentScore / ProgressBar.dataset.max * 100;
         ProgressBar.style.width = percentage + '%';
 
+        // Get coordinates of country from Google Places, then create marker
+        let apiKey = 'AIzaSyC572-BukrE9PySgtA3ykrO7iydTb4S4Ko';
+        fetch('https://places.googleapis.com/v1/places/' + place_id + '?fields=location&key=' + apiKey)
+          .then(response => response.json())
+          .then(response => {
+
+            // Create marker
+            const marker = new AdvancedMarkerElement({
+              map: map,
+              position: { lat: response.location.latitude, lng: response.location.longitude },
+              title: country,
+            });
+        });
+          
+      // Wrong guess
       } else {
         console.log("NOPE");
       }
