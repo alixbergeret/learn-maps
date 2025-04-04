@@ -11,6 +11,9 @@ let CurrentScore = 0;
 // Other variables
 var buttonGroup = document.getElementById("btn-group");
 var dropDown = document.getElementById("MapList");
+var btnReset = document.getElementById("btnReset");
+var ProgressBar = document.getElementById("ScoreProgress");
+var marker = null;
 
 //-----------------------------------------------------------------------------------------------------------------------------
 // Set map up
@@ -61,7 +64,6 @@ async function initMap() {
 
         // Increase and display score
         CurrentScore++;
-        let ProgressBar = document.getElementById("ScoreProgress");
         ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
 
         // Increase progress bar
@@ -78,7 +80,7 @@ async function initMap() {
             const countryTag = document.createElement("div");
             countryTag.className = "country-tag";
             countryTag.textContent = country;            
-            const marker = new AdvancedMarkerElement({
+            marker = new AdvancedMarkerElement({
               map: map,
               position: { lat: response.location.latitude, lng: response.location.longitude },
               title: country,
@@ -109,4 +111,12 @@ buttonGroup.addEventListener("click", function(event) {
 dropDown.addEventListener("click", function(event) {
   map.setZoom(Number(event.target.dataset.zoom));
   map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
+});
+
+// Start over button pressed
+btnReset.addEventListener("click", function(event) {
+  ProgressBar.style.width = '0%';
+  CurrentScore = 0;
+  ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;  
+  marker.map = null;
 });
