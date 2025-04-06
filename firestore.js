@@ -26,7 +26,7 @@ const db = getFirestore(app);
 // Other variables
 var dropDown = document.getElementById("MapList");
 var buttonGroup = document.getElementById("btn-group");
-
+var selectList = document.getElementById("selectList");
 //-----------------------------------------------------------------------------------------------------------------------------
 // When user selects a map from the dropdown, loads all countries/regions
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,8 @@ dropDown.addEventListener("click", function(event) {
     if (event.target.matches(".dropdown-item")) {  
 
         // First, clear list of countries/regions
-        buttonGroup.innerHTML = '';
+        //buttonGroup.innerHTML = '';
+        selectList.innerHTML = '';
 
         // Get map doc ID, then loads all countries/regions for it
         const querySnapshot = query(collection(db, "Maps", event.target.dataset.docid, "map_items"), orderBy("item_name"));
@@ -49,21 +50,13 @@ dropDown.addEventListener("click", function(event) {
             // Loop through records
             snapshot.forEach((doc) => {
 
-                // Create input element
-                let inputElement = document.createElement("input");
-                inputElement.type = "radio";
-                inputElement.classList.add("btn-check");
-                inputElement.name = "itemList";
-                inputElement.id = doc.id;
-                buttonGroup.appendChild(inputElement);
-
-                // Create label element
-                let labelElement = document.createElement("label");
-                labelElement.classList.add("btn", "btn-outline-primary", "choice");
-                labelElement.htmlFor = doc.id;
-                labelElement.innerHTML = doc.data().item_name.trim();
-                buttonGroup.appendChild(labelElement);
-
+                // Create option item
+                let listItem = document.createElement("option");
+                listItem.innerHTML = doc.data().item_name.trim();
+                listItem.value = doc.data().item_name.trim();
+                listItem.id = doc.id;
+                listItem.classList.add("choice");
+                selectList.appendChild(listItem);
             });
         });
     }

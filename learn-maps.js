@@ -11,6 +11,7 @@ let incorrectGuesses = 0;
 
 // Other variables
 var buttonGroup = document.getElementById("btn-group");
+var selectList = document.getElementById("selectList");
 var dropDown = document.getElementById("MapList");
 var btnReset = document.getElementById("btnReset");
 var ProgressBar = document.getElementById("ScoreProgress");
@@ -58,13 +59,13 @@ async function initMap() {
         // Check if current choice is correct
         if(country == CurrentChoice) {
 
-          // If correct, show toast message
-          const toastLiveExample = document.getElementById('liveToast');
-          const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-          toastBootstrap.show();
+          // Set current choice to blank
+          CurrentChoice = '';
 
           // Disable current selection in list
           document.getElementById(CurrentID).disabled = true;
+          document.getElementById(CurrentID).style.color = 'black';
+          document.getElementById(CurrentID).style.backgroundColor = 'rgb(162, 225, 167)';
 
           // Increase and display score
           CurrentScore++;
@@ -108,13 +109,15 @@ async function initMap() {
 initMap();
 //-----------------------------------------------------------------------------------------------------------------------------
 
-// Set current country/region
-buttonGroup.addEventListener("click", function(event) {
+selectList.addEventListener("click", function(event) {
+  console.log("1");
   if (event.target.matches(".choice")) { 
+    console.log("2");
     CurrentChoice = event.target.innerHTML;
-    CurrentID = event.target.getAttribute('for');
+    CurrentID = event.target.getAttribute('id');
   }
 });
+
 
 // Centers maps depending on map choice
 dropDown.addEventListener("click", function(event) {
