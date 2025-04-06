@@ -109,15 +109,13 @@ async function initMap() {
 initMap();
 //-----------------------------------------------------------------------------------------------------------------------------
 
+// User selects country/region in the list
 selectList.addEventListener("click", function(event) {
-  console.log("1");
   if (event.target.matches(".choice")) { 
-    console.log("2");
     CurrentChoice = event.target.innerHTML;
     CurrentID = event.target.getAttribute('id');
   }
 });
-
 
 // Centers maps depending on map choice
 dropDown.addEventListener("click", function(event) {
@@ -127,11 +125,16 @@ dropDown.addEventListener("click", function(event) {
 
 // Start over button pressed
 btnReset.addEventListener("click", function(event) {
+  
+  // Reset score
   ProgressBar.style.width = '0%';
   CurrentScore = 0;
   ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;  
-  marker.map = null;
+  
+  // Resert incorrect guesses
   incorrectGuesses = 0;
   document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
+
+  // Remove markers - TO BE DONE
 
 });
