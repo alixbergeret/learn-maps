@@ -27,6 +27,9 @@ const db = getFirestore(app);
 var dropDown = document.getElementById("MapList");
 var buttonGroup = document.getElementById("btn-group");
 var selectList = document.getElementById("selectList");
+var ProgressBar = document.getElementById("ScoreProgress");
+var ProgressBarLow = document.getElementById("ScoreProgressLow");
+
 //-----------------------------------------------------------------------------------------------------------------------------
 // When user selects a map from the dropdown, loads all countries/regions
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -42,8 +45,7 @@ dropDown.addEventListener("click", function(event) {
         const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
 
             // Display total in progress bar
-            let ProgressBar = document.getElementById("ScoreProgress");
-            ProgressBar.innerHTML = '0/' + snapshot.size;
+            ProgressBarLow.innerHTML = '0/' + snapshot.size;
             ProgressBar.dataset.max = snapshot.size;
             ProgressBar.style.width = '0%';
 

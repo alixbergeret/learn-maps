@@ -15,6 +15,7 @@ var selectList = document.getElementById("selectList");
 var dropDown = document.getElementById("MapList");
 var btnReset = document.getElementById("btnReset");
 var ProgressBar = document.getElementById("ScoreProgress");
+var ProgressBarLow = document.getElementById("ScoreProgressLow");
 var marker = null;
 
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -34,7 +35,8 @@ async function initMap() {
     zoom: 5,
     center: position,
     mapId: "82f817486ca073a",
-    disableDefaultUI: true
+    disableDefaultUI: true,
+    zoomControl: true
   });
 
   //---------------------------------------------------------------------------------------------------------------------------
@@ -69,7 +71,12 @@ async function initMap() {
 
           // Increase and display score
           CurrentScore++;
-          ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
+          if(CurrentScore > 5) {
+            ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
+            ProgressBarLow.innerHTML = '';
+          } else {
+            ProgressBarLow.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
+          }
 
           // Increase progress bar
           let percentage = CurrentScore / ProgressBar.dataset.max * 100;
