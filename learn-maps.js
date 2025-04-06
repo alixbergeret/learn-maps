@@ -43,9 +43,6 @@ async function initMap() {
   // Listen for click and look up country
   map.addListener("click", (e) => {
     
-    // DEBUG - print coordinates of click
-    console.log(e.latLng.toJSON());
-
     // Check if user has selected a choice
     if(CurrentChoice != '') {
 
@@ -53,10 +50,16 @@ async function initMap() {
       geocoder
       .geocode({ location: e.latLng })
       .then((response) => {
+        console.log(response);
 
         // Get country name and place ID from location
-        let country = response.results[response.results.length-1].formatted_address;
-        let place_id = response.results[response.results.length-1].place_id;
+        if(response.results[0].formatted_address.includes('Vatican City')) {
+          var country = 'Holy See';
+          var place_id = 'ChIJJTk-DGZgLxMRPGxQNTiMSQA';
+        } else {
+          var country = response.results[response.results.length-1].formatted_address;
+          var place_id = response.results[response.results.length-1].place_id;
+        }
 
         // Check if current choice is correct
         if(country == CurrentChoice) {
@@ -71,7 +74,7 @@ async function initMap() {
 
           // Increase and display score
           CurrentScore++;
-          if(CurrentScore > 5) {
+          if(CurrentScore > ProgressBar.dataset.max / 2) {
             ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
             ProgressBarLow.innerHTML = '';
           } else {
