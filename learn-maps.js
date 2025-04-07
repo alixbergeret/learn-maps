@@ -17,6 +17,7 @@ var btnReset = document.getElementById("btnReset");
 var ProgressBar = document.getElementById("ScoreProgress");
 var ProgressBarLow = document.getElementById("ScoreProgressLow");
 var marker = null;
+var markers = [];
 
 //-----------------------------------------------------------------------------------------------------------------------------
 // Set map up
@@ -40,7 +41,7 @@ async function initMap() {
   });
 
   //---------------------------------------------------------------------------------------------------------------------------
-  // Listen for click and look up country
+  // Listen for click on map, and look up country
   map.addListener("click", (e) => {
     
     // Check if user has selected a choice
@@ -91,7 +92,7 @@ async function initMap() {
             .then(response => response.json())
             .then(response => {
 
-              // Create marker
+              // Create marker and add to array
               const countryTag = document.createElement("div");
               countryTag.className = "country-tag";
               countryTag.textContent = country;            
@@ -101,6 +102,7 @@ async function initMap() {
                 title: country,
                 content: countryTag,
               });
+              markers.push(marker);
           });
             
         // Wrong guess
@@ -126,25 +128,38 @@ selectList.addEventListener("click", function(event) {
     CurrentID = event.target.getAttribute('id');
   }
 });
-
+//-----------------------------------------------------------------------------------------------------------------------------
 // Centers maps depending on map choice
 dropDown.addEventListener("click", function(event) {
   map.setZoom(Number(event.target.dataset.zoom));
   map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
 });
-
-// Start over button pressed
+//-----------------------------------------------------------------------------------------------------------------------------
+// "Start over" button pressed
 btnReset.addEventListener("click", function(event) {
   
-  // Reset score
-  ProgressBar.style.width = '0%';
+  // Reset score and progress bar
   CurrentScore = 0;
-  ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;  
-  
+  ProgressBar.style.width = '0%';
+  ProgressBar.innerHTML = '';  
+  ScoreProgressLow.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;  
+
   // Resert incorrect guesses
   incorrectGuesses = 0;
   document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
 
-  // Remove markers - TO BE DONE
+  // Remove markers
+  markers.forEach(deleteMarkers);
+  function deleteMarkers(value, index, array) {
+    markers[index].map = null;
+  }
+
+  // Reset list of countries
+  for (const child of selectList.children) {
+    child.disabled = false;
+    child.style.color = 'rgb(33, 37, 41)';
+    child.style.backgroundColor = 'rgb(255, 255, 255)';
+  }  
 
 });
+//-----------------------------------------------------------------------------------------------------------------------------
