@@ -44,6 +44,9 @@ async function initMap() {
   // Listen for click on map, and look up country
   map.addListener("click", (e) => {
     
+    // DEBUG - print coordinates of click
+    console.log(e.latLng.toJSON());
+
     // Check if user has selected a choice
     if(CurrentChoice != '') {
 
