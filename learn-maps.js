@@ -156,7 +156,6 @@ selectList.addEventListener("click", function(event) {
     CurrentChoice = event.target.innerHTML;
     CurrentID = event.target.getAttribute('id');
     CurrentMapType = event.target.dataset.type;
-    console.log(CurrentMapType);
   }
 });
 //-----------------------------------------------------------------------------------------------------------------------------
