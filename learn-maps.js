@@ -16,6 +16,8 @@ var dropDown = document.getElementById("MapList");
 var btnReset = document.getElementById("btnReset");
 var ProgressBar = document.getElementById("ScoreProgress");
 var ProgressBarLow = document.getElementById("ScoreProgressLow");
+var mapDiv = document.getElementById("map");
+
 var marker = null;
 var markers = [];
 
@@ -70,6 +72,10 @@ async function initMap() {
 
           // Set current choice to blank
           CurrentChoice = '';
+
+          // Display map border for 1 second?
+          mapDiv.style.border = "thick solid #4285F4";
+          setTimeout(function(){ mapDiv.style.border = "" }, 1000);
 
           // Disable current selection in list
           document.getElementById(CurrentID).disabled = true;

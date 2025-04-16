@@ -28,3 +28,20 @@
     border-right: 8px solid transparent;
     border-top: 8px solid #4285F4;
   }
+
+  .container {
+    height: 100vh;
+    background-color: #ffd800;
+  }
+
+  body {
+    background-color: #4285F4;
+  }
+
+  #selectList {
+    padding: 5px
+  }
+
+  h1 {
+    color: #4285F4;
+  }
