@@ -54,6 +54,7 @@ dropDown.addEventListener("click", function(event) {
 
                 // Create option item
                 let listItem = document.createElement("option");
+                listItem.dataset.type = event.target.dataset.type;
                 listItem.innerHTML = doc.data().item_name.trim();
                 listItem.value = doc.data().item_name.trim();
                 listItem.id = doc.id;
@@ -92,7 +93,8 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
                    doc.id, 
                    doc.data().map_lat, 
                    doc.data().map_lng,
-                   doc.data().map_zoom);
+                   doc.data().map_zoom,
+                   doc.data().map_type);
 
         // Save previous value
         prevType = doc.data().map_type;
@@ -106,7 +108,8 @@ function addToList(css_class,
                    doc_id = 0, 
                    map_lat = '', 
                    map_lng = '',
-                   map_zoom = 0) {
+                   map_zoom = 0,
+                   map_type = '') {
     
     // Create list item and add to list
     let listItem = document.createElement("li");
@@ -124,6 +127,7 @@ function addToList(css_class,
         link.dataset.lat = map_lat;
         link.dataset.lng = map_lng;
         link.dataset.zoom = map_zoom;
+        link.dataset.type = map_type;
     }
     link.textContent = textContent;
     link.classList.add(css_class);

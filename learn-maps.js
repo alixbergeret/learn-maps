@@ -7,6 +7,7 @@ let map;
 let CurrentChoice = '';
 let CurrentID = '';
 let CurrentScore = 0;
+let CurrentMapType = '';
 let incorrectGuesses = 0;
 
 // Other variables
@@ -58,17 +59,36 @@ async function initMap() {
       .then((response) => {
         console.log(response);
 
-        // Get country name and place ID from location
+        // Get country/region name and place ID from location
         if(response.results[0].formatted_address.includes('Vatican City')) {
-          var country = 'Holy See';
+          // Vatican City is really called Holy See
+          var country_or_region = 'Holy See';
           var place_id = 'ChIJJTk-DGZgLxMRPGxQNTiMSQA';
         } else {
-          var country = response.results[response.results.length-1].formatted_address;
-          var place_id = response.results[response.results.length-1].place_id;
+          
+          // If we are looking for countries
+          if(CurrentMapType == 'Countries') {
+
+            // The last address item contains the country name
+            var country_or_region = response.results[response.results.length-1].formatted_address;
+            var place_id = response.results[response.results.length-1].place_id;
+          
+          // If we are looking for regions (e.g. US states)
+          } else {
+            
+            // Get second from last item, which should contain "State, USA"
+            var country_or_region = response.results[response.results.length-2].formatted_address;
+            
+            // Get rid of ", ISA"
+            country_or_region = country_or_region.split(',');
+            country_or_region = country_or_region[0];
+
+            var place_id = response.results[response.results.length-2].place_id;
+          }
         }
 
         // Check if current choice is correct
-        if(country == CurrentChoice) {
+        if(country_or_region == CurrentChoice) {
 
           // Set current choice to blank
           CurrentChoice = '';
@@ -95,7 +115,7 @@ async function initMap() {
           let percentage = CurrentScore / ProgressBar.dataset.max * 100;
           ProgressBar.style.width = percentage + '%';
 
-          // Get coordinates of country from Google Places, then create marker
+          // Get coordinates of country/region from Google Places, then create marker
           let apiKey = 'AIzaSyC572-BukrE9PySgtA3ykrO7iydTb4S4Ko';
           fetch('https://places.googleapis.com/v1/places/' + place_id + '?fields=location&key=' + apiKey)
             .then(response => response.json())
@@ -104,11 +124,11 @@ async function initMap() {
               // Create marker and add to array
               const countryTag = document.createElement("div");
               countryTag.className = "country-tag";
-              countryTag.textContent = country;            
+              countryTag.textContent = country_or_region;            
               marker = new AdvancedMarkerElement({
                 map: map,
                 position: { lat: response.location.latitude, lng: response.location.longitude },
-                title: country,
+                title: country_or_region,
                 content: countryTag,
               });
               markers.push(marker);
@@ -135,6 +155,8 @@ selectList.addEventListener("click", function(event) {
   if (event.target.matches(".choice")) { 
     CurrentChoice = event.target.innerHTML;
     CurrentID = event.target.getAttribute('id');
+    CurrentMapType = event.target.dataset.type;
+    console.log(CurrentMapType);
   }
 });
 //-----------------------------------------------------------------------------------------------------------------------------
