@@ -30,6 +30,7 @@ var selectList = document.getElementById("selectList");
 var ProgressBar = document.getElementById("ScoreProgress");
 var ProgressBarLow = document.getElementById("ScoreProgressLow");
 var DropdownBtn = document.getElementById("DropdownBtn");
+var prevListItem = null;
 
 //-----------------------------------------------------------------------------------------------------------------------------
 // When user selects a map from the dropdown, loads all countries/regions
@@ -42,6 +43,12 @@ dropDown.addEventListener("click", function(event) {
         
         // Display current map on list button
         DropdownBtn.innerHTML = event.target.innerHTML;
+
+        // Select current item in the dropdown
+        event.target.classList.add("active");
+        if(prevListItem != null)
+            prevListItem.classList.remove("active");
+        prevListItem = event.target;
 
         // Get map doc ID, then loads all countries/regions for it
         const querySnapshot = query(collection(db, "Maps", event.target.dataset.docid, "map_items"), orderBy("item_name"));
