@@ -60,10 +60,14 @@ async function initMap() {
         console.log(response);
 
         // Get country/region name and place ID from location
+
+        // First, special cases
         if(response.results[0].formatted_address.includes('Vatican City')) {
+          
           // Vatican City is really called Holy See
           var country_or_region = 'Holy See';
           var place_id = 'ChIJJTk-DGZgLxMRPGxQNTiMSQA';
+
         } else {
           
           // Are we looking for a country or a region?
