@@ -66,25 +66,34 @@ async function initMap() {
           var place_id = 'ChIJJTk-DGZgLxMRPGxQNTiMSQA';
         } else {
           
-          // If we are looking for countries
+          // Are we looking for a country or a region?
           if(CurrentMapType == 'Countries') {
-
-            // The last address item contains the country name
-            var country_or_region = response.results[response.results.length-1].formatted_address;
-            var place_id = response.results[response.results.length-1].place_id;
-          
-          // If we are looking for regions (e.g. US states)
+            var location_type = 'country';
           } else {
-            
-            // Get second from last item, which should contain "State, USA"
-            var country_or_region = response.results[response.results.length-2].formatted_address;
-            
-            // Get rid of ", ISA"
-            country_or_region = country_or_region.split(',');
-            country_or_region = country_or_region[0];
-
-            var place_id = response.results[response.results.length-2].place_id;
+            var location_type = 'administrative_area_level_1';
           }
+
+          // Loop through address components
+          var index = 0;
+          response.results.every(element => {
+
+            // Have we found the right address component, i.e. country or region name?
+            if(element.types[0] == location_type) {
+              return false;   // Break
+            } else {
+              index++;        // Increase index and continue
+              return true;
+            }
+          });
+
+          // Get country or region name and place ID
+          var country_or_region = response.results[index].formatted_address;
+          var place_id = response.results[index].place_id;
+          
+          // Get rid of ", ISA"
+          country_or_region = country_or_region.split(',');
+          country_or_region = country_or_region[0];
+        
         }
 
         // Check if current choice is correct
