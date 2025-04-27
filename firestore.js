@@ -44,7 +44,7 @@ dropDown.addEventListener("click", function(event) {
         // Display current map on list button
         DropdownBtn.innerHTML = event.target.innerHTML;
 
-        // Select current item in the dropdown
+        // Select current item in the dropdown, and deselect previous one
         event.target.classList.add("active");
         if(prevListItem != null)
             prevListItem.classList.remove("active");

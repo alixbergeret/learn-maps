@@ -1,47 +1,52 @@
 .progress {
-    height: 25px
+  height: 25px
 }
 
 #ScoreProgress {
-    width: 0%
+  width: 0%
 }
 
 /* HTML marker styles */
 .country-tag {
-    background-color: #4285F4;
-    border-radius: 8px;
-    color: #FFFFFF;
-    font-size: 14px;
-    padding: 6px 10px;
-    position: relative;
-  }
+  background-color: #4285F4;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 6px 10px;
+  position: relative;
+}
   
 .country-tag::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    transform: translate(-50%, 0);
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #4285F4;
-  }
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 0);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #4285F4;
+}
 
-  .container {
-    height: 100vh;
-    background-color: #ffd800;
-  }
+.container {
+  height: 100vh;
+  background-color: #ffd800;
+}
 
-  body {
-    background-color: #4285F4;
-  }
+body {
+  background-color: #4285F4;
+}
 
-  #selectList {
-    padding: 5px
-  }
+#selectList {
+  padding: 5px;
+  height: 450px
+}
 
-  h1 {
-    color: #4285F4;
-  }
+h1 {
+  color: #4285F4;
+}
+
+.choice {
+  text-wrap: wrap;
+}
