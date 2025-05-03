@@ -32,6 +32,9 @@ var ProgressBarLow = document.getElementById("ScoreProgressLow");
 var DropdownBtn = document.getElementById("DropdownBtn");
 var prevListItem = null;
 
+// Import variables from maps module
+import {markers} from './learn-maps.js';
+
 //-----------------------------------------------------------------------------------------------------------------------------
 // When user selects a map from the dropdown, loads all countries/regions
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -51,6 +54,7 @@ dropDown.addEventListener("click", function(event) {
         prevListItem = event.target;
 
         // Get map doc ID, then loads all countries/regions for it
+        dropDown.dataset.current_map_id = event.target.dataset.docid;
         const querySnapshot = query(collection(db, "Maps", event.target.dataset.docid, "map_items"), orderBy("item_name"));
         const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
 
@@ -69,6 +73,17 @@ dropDown.addEventListener("click", function(event) {
                 listItem.value = doc.data().item_name.trim();
                 listItem.id = doc.id;
                 listItem.classList.add("choice");
+
+                // Have we guessed it already? if so, disable and set to green.
+                if (typeof markers[event.target.dataset.docid] != "undefined") {
+                    if (typeof markers[event.target.dataset.docid][doc.id] != "undefined") {
+                        listItem.disabled = true;
+                        listItem.style.color = 'black';
+                        listItem.style.backgroundColor = 'rgb(162, 225, 167)';
+                    }
+                }
+
+                // Add item to list
                 selectList.appendChild(listItem);
             });
         });

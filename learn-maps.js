@@ -20,7 +20,7 @@ var ProgressBarLow = document.getElementById("ScoreProgressLow");
 var mapDiv = document.getElementById("map");
 
 var marker = null;
-var markers = [];
+export var markers = [];
 
 //-----------------------------------------------------------------------------------------------------------------------------
 // Set map up
@@ -144,7 +144,13 @@ async function initMap() {
                 title: country_or_region,
                 content: countryTag,
               });
-              markers.push(marker);
+
+              // Add marker to array
+              if (typeof markers[dropDown.dataset.current_map_id] == "undefined") {
+                markers[dropDown.dataset.current_map_id] = new Array ();
+              }
+              markers[dropDown.dataset.current_map_id][CurrentID] = marker;
+
           });
             
         // Wrong guess
@@ -191,11 +197,13 @@ btnReset.addEventListener("click", function(event) {
   incorrectGuesses = 0;
   document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
 
-  // Remove markers
-  markers.forEach(deleteMarkers);
-  function deleteMarkers(value, index, array) {
-    markers[index].map = null;
+  // Remove markers from map by setting their "map" atttribute to "undefined"
+  for (var index in markers[dropDown.dataset.current_map_id]) {
+    markers[dropDown.dataset.current_map_id][index].map = undefined;
   }
+
+  // Remove markers from array itself
+  markers = markers.splice(dropDown.dataset.current_map_id, 1);
 
   // Reset list of countries
   for (const child of selectList.children) {
