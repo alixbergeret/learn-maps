@@ -203,7 +203,7 @@ btnReset.addEventListener("click", function(event) {
   }
 
   // Remove markers from array itself
-  markers = markers.splice(dropDown.dataset.current_map_id, 1);
+  delete markers[dropDown.dataset.current_map_id];
 
   // Reset list of countries
   for (const child of selectList.children) {
