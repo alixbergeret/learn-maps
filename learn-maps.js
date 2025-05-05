@@ -11,13 +11,14 @@ let CurrentMapType = '';
 let incorrectGuesses = 0;
 
 // Other variables
-var buttonGroup = document.getElementById("btn-group");
+//var buttonGroup = document.getElementById("btn-group");
 var selectList = document.getElementById("selectList");
 var dropDown = document.getElementById("MapList");
 var btnReset = document.getElementById("btnReset");
 var ProgressBar = document.getElementById("ScoreProgress");
 var ProgressBarLow = document.getElementById("ScoreProgressLow");
 var mapDiv = document.getElementById("map");
+var currentColour = '4285F4';
 
 var marker = null;
 export var markers = [];
@@ -137,6 +138,8 @@ async function initMap() {
               // Create marker and add to array
               const countryTag = document.createElement("div");
               countryTag.className = "country-tag";
+              countryTag.style.backgroundColor = '#' + currentColour;
+              countryTag.style.setProperty('--background', '#' + currentColour);
               countryTag.textContent = country_or_region;            
               marker = new AdvancedMarkerElement({
                 map: map,
@@ -182,6 +185,8 @@ selectList.addEventListener("click", function(event) {
 dropDown.addEventListener("click", function(event) {
   map.setZoom(Number(event.target.dataset.zoom));
   map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
+  currentColour = event.target.dataset.colour;
+  console.log(currentColour);
 });
 //-----------------------------------------------------------------------------------------------------------------------------
 // "Start over" button pressed

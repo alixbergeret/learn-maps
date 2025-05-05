@@ -119,7 +119,8 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
                    doc.data().map_lat, 
                    doc.data().map_lng,
                    doc.data().map_zoom,
-                   doc.data().map_type);
+                   doc.data().map_type,
+                   doc.data().map_colour);
 
         // Save previous value
         prevType = doc.data().map_type;
@@ -134,7 +135,8 @@ function addToList(css_class,
                    map_lat = '', 
                    map_lng = '',
                    map_zoom = 0,
-                   map_type = '') {
+                   map_type = '',
+                   map_colour = '4285F4') {
     
     // Create list item and add to list
     let listItem = document.createElement("li");
@@ -153,12 +155,13 @@ function addToList(css_class,
         link.dataset.lng = map_lng;
         link.dataset.zoom = map_zoom;
         link.dataset.type = map_type;
+        link.dataset.colour = map_colour;
     }
+
     link.textContent = textContent;
     link.classList.add(css_class);
     if(doc_id != 0)
         link.dataset.docid = doc_id;
 
     listItem.appendChild(link);
-    
 }
