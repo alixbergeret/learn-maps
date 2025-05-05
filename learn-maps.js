@@ -64,11 +64,11 @@ async function initMap() {
 
         // First, special cases
         if(response.results[0].formatted_address.includes('Vatican City')) {
-          
-          // Vatican City is really called Holy See
           var country_or_region = 'Holy See';
           var place_id = 'ChIJJTk-DGZgLxMRPGxQNTiMSQA';
-
+        } else  if(response.results[2].formatted_address.includes('Newfoundland and Labrador')) {
+          var country_or_region = 'Newfoundland and Labrador';
+          var place_id = 'ChIJv46AZBbNbkwRhObiTXazvsU';
         } else {
           
           // Are we looking for a country or a region?
@@ -181,12 +181,16 @@ selectList.addEventListener("click", function(event) {
   }
 });
 //-----------------------------------------------------------------------------------------------------------------------------
-// Centers maps depending on map choice
+// When selecting a map
 dropDown.addEventListener("click", function(event) {
+
+  // Centers map depending on map choice
   map.setZoom(Number(event.target.dataset.zoom));
   map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
+  
+  // Set current marker colour
   currentColour = event.target.dataset.colour;
-  console.log(currentColour);
+
 });
 //-----------------------------------------------------------------------------------------------------------------------------
 // "Start over" button pressed
