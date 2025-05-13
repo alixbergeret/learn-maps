@@ -232,6 +232,7 @@ function displayScore()
     ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
     ProgressBarLow.innerHTML = '';
   } else {
+    ProgressBar.innerHTML = '';
     ProgressBarLow.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
   }
 
