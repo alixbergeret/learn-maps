@@ -7,6 +7,7 @@ let map;
 let CurrentChoice = '';
 let CurrentID = '';
 let CurrentScore = 0;
+let AllScores = [];
 let CurrentMapType = '';
 let incorrectGuesses = 0;
 
@@ -18,10 +19,11 @@ var btnReset = document.getElementById("btnReset");
 var ProgressBar = document.getElementById("ScoreProgress");
 var ProgressBarLow = document.getElementById("ScoreProgressLow");
 var mapDiv = document.getElementById("map");
-var currentColour = '4285F4';
-
 var marker = null;
+
+// These are needed in the firestore.js file
 export var markers = [];
+export var currentColour = '4285F4';
 
 //-----------------------------------------------------------------------------------------------------------------------------
 // Set map up
@@ -118,16 +120,8 @@ async function initMap() {
 
           // Increase and display score
           CurrentScore++;
-          if(CurrentScore > ProgressBar.dataset.max / 2) {
-            ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
-            ProgressBarLow.innerHTML = '';
-          } else {
-            ProgressBarLow.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
-          }
-
-          // Increase progress bar
-          let percentage = CurrentScore / ProgressBar.dataset.max * 100;
-          ProgressBar.style.width = percentage + '%';
+          AllScores[dropDown.dataset.current_map_id] = CurrentScore;
+          displayScore();
 
           // Get coordinates of country/region from Google Places, then create marker
           let apiKey = 'AIzaSyC572-BukrE9PySgtA3ykrO7iydTb4S4Ko';
@@ -181,26 +175,34 @@ selectList.addEventListener("click", function(event) {
   }
 });
 //-----------------------------------------------------------------------------------------------------------------------------
-// When selecting a map
-dropDown.addEventListener("click", function(event) {
+// Function called by firestore.js when a new map is selected from the list
+export function newMapSelected(map_colour, map_zoom, map_lat, map_lng, current_map_id, snapshot_size) {
+  currentColour = map_colour;
 
   // Centers map depending on map choice
-  map.setZoom(Number(event.target.dataset.zoom));
-  map.setCenter({lat: Number(event.target.dataset.lat), lng: Number(event.target.dataset.lng)});
+  map.setZoom(Number(map_zoom));
+  map.setCenter({lat: Number(map_lat), lng: Number(map_lng)});
   
-  // Set current marker colour
-  currentColour = event.target.dataset.colour;
+  // Save number of countries/regions of current map in progress bar
+  ProgressBar.dataset.max = snapshot_size;
 
-});
+  // Load score for this map if it exists, and display it
+  if (typeof AllScores[current_map_id] != "undefined") {
+    CurrentScore = AllScores[current_map_id];
+  } else {
+    CurrentScore = 0;
+  }
+  displayScore(); 
+
+}
 //-----------------------------------------------------------------------------------------------------------------------------
 // "Start over" button pressed
 btnReset.addEventListener("click", function(event) {
   
   // Reset score and progress bar
+  AllScores[dropDown.dataset.current_map_id] = 0;
   CurrentScore = 0;
-  ProgressBar.style.width = '0%';
-  ProgressBar.innerHTML = '';  
-  ScoreProgressLow.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;  
+  displayScore(); 
 
   // Resert incorrect guesses
   incorrectGuesses = 0;
@@ -223,3 +225,17 @@ btnReset.addEventListener("click", function(event) {
 
 });
 //-----------------------------------------------------------------------------------------------------------------------------
+function displayScore()
+{
+  // Display score value
+  if(CurrentScore > ProgressBar.dataset.max / 2) {
+    ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
+    ProgressBarLow.innerHTML = '';
+  } else {
+    ProgressBarLow.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
+  }
+
+  // Set progress bar
+  let percentage = CurrentScore / ProgressBar.dataset.max * 100;
+  ProgressBar.style.width = percentage + '%';  
+}

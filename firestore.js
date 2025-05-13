@@ -25,7 +25,6 @@ const db = getFirestore(app);
 
 // Other variables
 var dropDown = document.getElementById("MapList");
-var buttonGroup = document.getElementById("btn-group");
 var selectList = document.getElementById("selectList");
 var ProgressBar = document.getElementById("ScoreProgress");
 var ProgressBarLow = document.getElementById("ScoreProgressLow");
@@ -34,6 +33,7 @@ var prevListItem = null;
 
 // Import variables from maps module
 import {markers} from './learn-maps.js';
+import {newMapSelected} from './learn-maps.js';
 
 //-----------------------------------------------------------------------------------------------------------------------------
 // When user selects a map from the dropdown, loads all countries/regions
@@ -58,10 +58,14 @@ dropDown.addEventListener("click", function(event) {
         const querySnapshot = query(collection(db, "Maps", event.target.dataset.docid, "map_items"), orderBy("item_name"));
         const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
 
-            // Display total in progress bar
-            ProgressBarLow.innerHTML = '0/' + snapshot.size;
-            ProgressBar.dataset.max = snapshot.size;
-            ProgressBar.style.width = '0%';
+            // Pass info to learn-maps.js
+            newMapSelected(event.target.dataset.colour,
+                event.target.dataset.zoom,
+                event.target.dataset.lat,
+                event.target.dataset.lng,
+                event.target.dataset.docid,
+                snapshot.size
+            );  
 
             // Loop through records
             snapshot.forEach((doc) => {
