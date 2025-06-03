@@ -231,9 +231,11 @@ function displayScore()
   if(CurrentScore > ProgressBar.dataset.max / 2) {
     ProgressBar.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
     ProgressBarLow.innerHTML = '';
+    ProgressBarLow.classList.remove("ms-2");
   } else {
     ProgressBar.innerHTML = '';
     ProgressBarLow.innerHTML = CurrentScore + '/' + ProgressBar.dataset.max;
+    ProgressBarLow.classList.add("ms-2");
   }
 
   // Set progress bar
