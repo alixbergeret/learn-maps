@@ -1,5 +1,5 @@
 ### How to access the website
-[https://alixbergeret.github.io/learn-maps/](https://alixbergeret.github.io/learn-maps/)
+Simply visit this URL: [https://alixbergeret.github.io/learn-maps/](https://alixbergeret.github.io/learn-maps/)
 
 ### What is Learn Maps?
 This "serverless" project is a fun geography learning tool that showcases what can be achieved with Google APIs:
