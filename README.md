@@ -1,3 +1,6 @@
+### How to access the website
+[https://alixbergeret.github.io/learn-maps/](https://alixbergeret.github.io/learn-maps/)
+
 ### What is Learn Maps?
 This "serverless" project is a fun geography learning tool that showcases what can be achieved with Google APIs:
 - [Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview): to display the interactive map with custom styling (i.e. no visible country names).
