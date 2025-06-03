@@ -6,10 +6,12 @@
 let map;
 let CurrentChoice = '';
 let CurrentID = '';
+let CurrentMapType = '';
+
 let CurrentScore = 0;
 let AllScores = [];
-let CurrentMapType = '';
 let incorrectGuesses = 0;
+let AllIncorrectGuesses = [];
 
 // Other variables
 //var buttonGroup = document.getElementById("btn-group");
@@ -155,6 +157,7 @@ async function initMap() {
           
           // Increase incorrect guesses and display on screen
           incorrectGuesses++;
+          AllIncorrectGuesses[dropDown.dataset.current_map_id] = incorrectGuesses;
           document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
 
         }
@@ -186,12 +189,17 @@ export function newMapSelected(map_colour, map_zoom, map_lat, map_lng, current_m
   // Save number of countries/regions of current map in progress bar
   ProgressBar.dataset.max = snapshot_size;
 
-  // Load score for this map if it exists, and display it
+  // Load score and incorrect guesses for this map if they exist, and display them
   if (typeof AllScores[current_map_id] != "undefined") {
     CurrentScore = AllScores[current_map_id];
   } else {
     CurrentScore = 0;
   }
+  if (typeof AllIncorrectGuesses[current_map_id] != "undefined") {
+    incorrectGuesses = AllIncorrectGuesses[current_map_id];
+  } else {
+    incorrectGuesses = 0;
+  }  
   displayScore(); 
 
 }
@@ -202,11 +210,13 @@ btnReset.addEventListener("click", function(event) {
   // Reset score and progress bar
   AllScores[dropDown.dataset.current_map_id] = 0;
   CurrentScore = 0;
-  displayScore(); 
 
   // Resert incorrect guesses
+  AllIncorrectGuesses[dropDown.dataset.current_map_id] = 0;
   incorrectGuesses = 0;
-  document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
+
+  // Display score and incorrect guesses
+  displayScore(); 
 
   // Remove markers from map by setting their "map" atttribute to "undefined"
   for (var index in markers[dropDown.dataset.current_map_id]) {
@@ -241,4 +251,7 @@ function displayScore()
   // Set progress bar
   let percentage = CurrentScore / ProgressBar.dataset.max * 100;
   ProgressBar.style.width = percentage + '%';  
+
+  // Display incorrect guesses
+  document.getElementById("incorrectEm").innerHTML = incorrectGuesses;
 }
